@@ -94,3 +94,8 @@ BWImgNet/ColoredImgNet. In experiment 1, there should be a total of 60 models (2
 color conditions * 3 blur conditions * 10 trials) while in experiment 2, there
 should be a total of 80 models (2 color conditions * 4 pretrained model
 conditions * 10 trials).
+
+If you would like to examine the difference between accuracy between basic-
+and subordinate-level categories in the models trained in Experiment 2, you
+can run getLabelAccuracyBW.py and getLabelAccuracyColored.py. Results can be
+found under the folder "labelAccuracy".
