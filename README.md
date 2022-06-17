@@ -34,7 +34,7 @@ Description of repo files:
 - createDictImgNet.py: important data preprocessing for imagenet data
 - getLabelAccuracyBW.py: get accuracy of basic vs subordinate categories using
   grayscale models from experiment 2
-- getLabelAccuracyColored.py: get accuracy of basic vs subordinate categories 
+- getLabelAccuracyColored.py: get accuracy of basic vs subordinate categories
   using colored models from experiment 2
 
 Let's get started!:
@@ -90,7 +90,7 @@ your ImageNet/Experiment2 models after you finish running your
 Ecoset/Experiment1 trials. Make sure for each new trials, you change the
 trialNumber variable in your scripts! The results for Experiment 1 should be
 saved under BW/Colored and the results for Experiment 2 should be saved under
-BWImgNet/ColoredImgNet. In experiment 1, there should be a total of 60 models  
-(2 color conditions * 3 blur conditions * 10 trials) while in experiment 2,
-there should be a total of 80 models (2 color conditions * 4 pretrained model
+BWImgNet/ColoredImgNet. In experiment 1, there should be a total of 60 models (2
+color conditions * 3 blur conditions * 10 trials) while in experiment 2, there
+should be a total of 80 models (2 color conditions * 4 pretrained model
 conditions * 10 trials).
