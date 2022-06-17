@@ -4,11 +4,13 @@ import os
 import shutil
 import numpy as np
 from PIL import Image
-import torchvision   
+import torchvision
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 import time
 import csv
+
+trialNumber = '1' #what trial are you on?
 
 cuda = torch.cuda.is_available()
 print("Let's use", torch.cuda.device_count(), "GPUs!")
@@ -19,7 +21,6 @@ def conv3x3(in_planes, out_planes, stride=1, groups=1, dilation=1):
     """3x3 convolution with padding"""
     return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
                      padding=dilation, groups=groups, bias=False, dilation=dilation)
-
 
 def conv1x1(in_planes, out_planes, stride=1):
     """1x1 convolution"""
@@ -243,15 +244,6 @@ def resnet50():
     """
     return _resnet("resnet50", Bottleneck, [3, 4, 6, 3])
 
-src = "/lab_data/tarrlab/common/datasets/ILSVRC/Data/CLS-LOC/"
-path = '/scratch/ojinsi/'
-
-if not os.path.isdir(path): 
-    os.mkdir(path)
-dest = path + 'ILSVRC'
-if not os.path.isdir(dest):
-    shutil.copytree(src, dest)
-
 class ImageDataset(Dataset):
     def __init__(self, img_lst, label_lst, typeEval):
         self.img_lst = img_lst
@@ -267,7 +259,7 @@ class ImageDataset(Dataset):
 
     def __getitem__(self, index):
         img = Image.open(self.img_lst[self.current_indicies[index]]).convert('L')
-        width, height = img.size 
+        width, height = img.size
         min_dim = min([width, height])
         img = torchvision.transforms.ToTensor()(img)
         cropped_img = transforms.CenterCrop(min_dim)(img)
@@ -275,37 +267,33 @@ class ImageDataset(Dataset):
         label = self.label_lst[self.current_indicies[index]]
         return img, label
 
-    def change_img_lst(self, epoch): 
+    def change_img_lst(self, epoch):
         self.current_indicies = []
-        filename = '/home/ojinsi/csvFiles/ImageNet/train/imagesByEpoch/epoch' + str(epoch) + '.csv'
+        filename = 'csvFiles/ImageNet/train/imagesByEpoch/epoch' + str(epoch) + '.csv'
         open_file = open(filename)
         read_file = csv.reader(open_file, delimiter="\t")
         i = 0
         for row in read_file:
-            if i == 0: 
-                i+=1 
+            if i == 0:
+                i+=1
                 continue
             parsed_row = row[0].split(',')
             self.current_indicies.append(int(parsed_row[-1]))
 
-def get_scratch_path(path): 
-    split_path = "/".join(path.split("/")[-3:])
-    return "/scratch/ojinsi/ILSVRC/" + split_path
-
-def load_data(typeEval): 
-    filename = '/home/ojinsi/csvFiles/ImageNet/'+typeEval+'/imageToLabelDict.csv'
+def load_data(typeEval):
+    filename = 'csvFiles/ImageNet/'+typeEval+'/imageToLabelDict.csv'
     img_lst = []
-    label_lst = [] 
+    label_lst = []
     open_file = open(filename)
     read_file = csv.reader(open_file, delimiter="\t")
     i = 0
     for row in read_file:
-        if i == 0: 
-            i+=1 
+        if i == 0:
+            i+=1
             continue
         parsed_row = row[0].split(',')
-        img_lst.append(get_scratch_path(parsed_row[0]))
-        label_lst.append(int(parsed_row[1]))
+        img_lst.append(parsed_row[1])
+        label_lst.append(int(parsed_row[2]))
     open_file.close()
     return img_lst, label_lst
 
@@ -329,19 +317,18 @@ weightDecay = 5e-5
 numEpochs = 150
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=learningRate, weight_decay=weightDecay, momentum= .9)
-scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer=optimizer, gamma = .99, verbose = True)
 
 train_accuracy = []
-val_accuracy = [] 
+val_accuracy = []
 
 best_accuracy = 0
 
-def train(model, train_dataloader, device): 
-    num_correct_training = 0 
+def train(model, train_dataloader, device):
+    num_correct_training = 0
     for _, (x, y) in enumerate(train_dataloader):
         model.train()
         optimizer.zero_grad()
-        
+
         x, y = x.to(device), y.to(device)
         outputs = model(x)
 
@@ -354,7 +341,7 @@ def train(model, train_dataloader, device):
         num_correct_training += (torch.argmax(outputs, axis=1) == y).sum().item()
     return model, num_correct_training
 
-filename = '/home/ojinsi/trials/BW50ImgNet/10/trainingLogBWModel.csv'
+filename = 'trials/BWImgNet/' + trialNumber + '/trainingLogBWModel.csv'
 results = [["Epoch", "Training Acc", "Val Acc", "Time", "Best Val Acc"]]
 for epoch in range(numEpochs):
     model.train()
@@ -369,22 +356,21 @@ for epoch in range(numEpochs):
         x, y = x.to(device), y.to(device)
         outputs = model(x)
         num_correct_validation += (torch.argmax(outputs, axis=1) == y).sum().item()
-    
-    if (num_correct_validation/len(val_dataset) > best_accuracy): 
-        torch.save(model.state_dict(), '/home/ojinsi/trials/BW50ImgNet/6/BWModel.pt')
+
+    if (num_correct_validation/len(val_dataset) > best_accuracy):
+        torch.save(model.state_dict(), 'trials/BWImgNet/' + trialNumber + '/BWModel.pt')
         best_accuracy = num_correct_validation/len(val_dataset)
 
     curr_train_accur = num_correct_training / len(train_dataset)
     curr_val_accur = num_correct_validation / len(val_dataset)
     train_accuracy.append(curr_train_accur)
     val_accuracy.append(curr_val_accur)
-    #scheduler.step() 
     end_time = time.time()
 
     print('Epoch: {}, Training Accuracy: {:.2f}, Validation Accuracy: {:.2f}'.format(epoch, curr_train_accur, curr_val_accur))
     print("Time for epoch: " + str(end_time - start_time) + "s" )
-    
+
     results.append([epoch, curr_train_accur, curr_val_accur,  str(end_time - start_time), best_accuracy])
-    with open(filename, 'w') as csvfile: 
-        csvwriter = csv.writer(csvfile) 
+    with open(filename, 'w') as csvfile:
+        csvwriter = csv.writer(csvfile)
         csvwriter.writerows(results)
