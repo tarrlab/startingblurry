@@ -52,7 +52,11 @@
   trains on colored ImageNet images
 - ColoredNonLinearBlurModel2ImgNet.py: uses pretrained models from
   ColoredNonLinearBlurModel2.py, trains on colored ImageNet images
-
+##### Statistics and plotting code (in subfolder "analysis")
+- graphAccuracyEcoset.ipynb: run stats and make plots for models from Experiment 1 (makes our Figure 2)
+- graphAccuracyImgNet.ipynb: run stats and make plots for models from Experiment 2 (makes our Figure 3)
+- graphAccuracyImgNet_BasicSub.ipynb: plot basic vs. subordinate accuracy (makes our Figure 4)
+  
 ### Steps to run the code
 <ol>
   <li> Clone this repository
