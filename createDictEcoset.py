@@ -24,7 +24,8 @@ def parse_data(datadir, target_dict = None):
     return img_list, label_list, class_n, target_dict
 
 #TRAIN
-root_path = 'insert path to Ecoset folder '+ '/train'
+root_path = '/user_data/mmhender/startingblurry/train/'
+# root_path = 'insert path to Ecoset folder '+ '/train'
 
 img_list, label_list, class_n, target_dict = parse_data(root_path)
 total_len = len(img_list)
@@ -73,7 +74,8 @@ for i in range(1000):
     csvwriter.writerows(final_result)
 
 #VAL
-root_path = 'insert path to Ecoset folder '+ '/val'
+root_path = '/user_data/mmhender/startingblurry/val/'
+# root_path = 'insert path to Ecoset folder '+ '/val'
 
 img_list, label_list, class_n, target_dict = parse_data(root_path, target_dict)
 total_len = len(img_list)
