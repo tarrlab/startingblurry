@@ -270,7 +270,7 @@ class ImageDataset(Dataset):
 
     def change_img_lst(self, epoch):
         self.current_indicies = []
-        filename = 'csvFiles/ImageNet/train/imagesByEpoch/epoch' + str(epoch) + '.csv'
+        filename = 'csvFiles/ImgNet/train/imagesByEpoch/epoch' + str(epoch) + '.csv'
         open_file = open(filename)
         read_file = csv.reader(open_file, delimiter="\t")
         i = 0
@@ -282,7 +282,7 @@ class ImageDataset(Dataset):
             self.current_indicies.append(int(parsed_row[-1]))
 
 def load_data(typeEval):
-    filename = 'csvFiles/ImageNet/'+typeEval+'/imageToLabelDict.csv'
+    filename = 'csvFiles/ImgNet/'+typeEval+'/imageToLabelDict.csv'
     img_lst = []
     label_lst = []
     open_file = open(filename)
