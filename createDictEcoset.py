@@ -1,5 +1,6 @@
 import os
 import csv
+from random import sample
 
 def parse_data(datadir, target_dict = None):
     img_list = []
