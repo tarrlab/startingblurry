@@ -2,6 +2,12 @@ import os
 import csv
 from random import sample
 
+### ENTER YOUR ECOSET PATH HERE #####
+imagenet_path = '/lab_data/tarrlab/common/datasets/Ecoset/'
+train_path = os.path.join(imagenet_path, 'train')
+val_path = os.path.join(imagenet_path, 'val')
+val_path = os.path.join(imagenet_path, 'test')
+
 def parse_data(datadir, target_dict = None):
     img_list = []
     ID_list = []
@@ -25,10 +31,7 @@ def parse_data(datadir, target_dict = None):
     return img_list, label_list, class_n, target_dict
 
 #TRAIN
-root_path = '/user_data/mmhender/startingblurry/train/'
-# root_path = 'insert path to Ecoset folder '+ '/train'
-
-img_list, label_list, class_n, target_dict = parse_data(root_path)
+img_list, label_list, class_n, target_dict = parse_data(train_path)
 total_len = len(img_list)
 lstOfInds = range(total_len)
 
@@ -75,10 +78,7 @@ for i in range(1000):
     csvwriter.writerows(final_result)
 
 #VAL
-root_path = '/user_data/mmhender/startingblurry/val/'
-# root_path = 'insert path to Ecoset folder '+ '/val'
-
-img_list, label_list, class_n, target_dict = parse_data(root_path, target_dict)
+img_list, label_list, class_n, target_dict = parse_data(val_path, target_dict)
 total_len = len(img_list)
 
 #make csv of all images and labels
@@ -92,9 +92,7 @@ with open(filename, 'w') as csvfile:
   csvwriter.writerows(results)
 
 #TEST
-root_path = 'insert path to Ecoset folder '+ '/test'
-
-img_list, label_list, class_n, target_dict = parse_data(root_path, target_dict)
+img_list, label_list, class_n, target_dict = parse_data(test_path, target_dict)
 total_len = len(img_list)
 
 #make csv of all images and labels

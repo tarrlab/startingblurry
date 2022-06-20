@@ -2,12 +2,18 @@ import os
 import csv
 from random import sample
 
+### ENTER YOUR IMAGENET PATH HERE #####
+imagenet_path = '/lab_data/tarrlab/common/datasets/ILSVRC/Data/CLS-LOC/'
+train_path = os.path.join(imagenet_path, 'train')
+val_path = os.path.join(imagenet_path, 'val')
+
 def parse_data(datadir, target_dict = None):
     img_list = []
     ID_list = []
     uniqueID_list = []
-    for direc in os.listdir(datadir):
-      if direc != '.DS_Store':
+    items = os.listdir(datadir);
+    folders = [it for it in items if os.path.isdir(os.path.join(datadir, it)) and '.DS_STORE' not in it]
+    for direc in folders:      
         curr_path = os.path.join(datadir, direc)
         uniqueID_list.append(direc)
         for filename in os.listdir(curr_path):
@@ -24,10 +30,9 @@ def parse_data(datadir, target_dict = None):
     print('{}\t\t{}\n{}\t\t{}'.format('#Images', '#Labels', len(img_list), class_n))
     return img_list, label_list, class_n, target_dict
 
-#TRAIN
-root_path = 'insert path to ImgNet folder '+ '/train'
+# TRAIN
 
-img_list, label_list, class_n, target_dict = parse_data(root_path)
+img_list, label_list, class_n, target_dict = parse_data(train_path)
 total_len = len(img_list)
 lstOfInds = range(total_len)
 
@@ -52,7 +57,7 @@ with open(filename, 'w') as csvfile:
   csvwriter.writerows(results)
 
 #make csv for each epoch
-header = ["Epoch", "Order", "Image", "Label", , "Index"]
+header = ["Epoch", "Order", "Image", "Label", "Index"]
 #We did a maximum of 300 epochs but chose random images for 1000 epochs in case
 #we wanted to play around with more epochs!
 for i in range(1000):
@@ -74,9 +79,7 @@ for i in range(1000):
     csvwriter.writerows(final_result)
 
 #VAL
-root_path = 'insert path to ImgNet folder '+ '/val'
-
-img_list, label_list, class_n, target_dict = parse_data(root_path, target_dict)
+img_list, label_list, class_n, target_dict = parse_data(val_path, target_dict)
 total_len = len(img_list)
 
 #make csv of all images and labels
