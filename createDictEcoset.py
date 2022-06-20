@@ -83,7 +83,7 @@ total_len = len(img_list)
 
 #make csv of all images and labels
 filename = "csvFiles/Ecoset/val/imageToLabelDict.csv"
-header = ["Image", "Label"]
+header = ["Order", "Image", "Label"]
 for i in range(total_len):
     results.append([str(i), img_list[i], label_list[i]])
 with open(filename, 'w') as csvfile:
@@ -97,7 +97,7 @@ total_len = len(img_list)
 
 #make csv of all images and labels
 filename = "csvFiles/Ecoset/test/imageToLabelDict.csv"
-header = ["Image", "Label"]
+header = ["Order", "Image", "Label"]
 for i in range(total_len):
   results.append([str(i), img_list[i], label_list[i]])
 with open(filename, 'w') as csvfile:

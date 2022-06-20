@@ -294,7 +294,7 @@ def load_data(typeEval):
             i+=1
             continue
         parsed_row = row[0].split(',')
-        img_lst.append(get_scratch_path(parsed_row[1]))
+        img_lst.append(parsed_row[1])
         label_lst.append(int(parsed_row[2]))
     open_file.close()
     return img_lst, label_lst
