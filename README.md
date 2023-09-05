@@ -1,4 +1,9 @@
-# startingblurry
+# Code related to our paper:
+
+Jinsi* O, Henderson* MM, Tarr MJ (2023) Early experience with low-pass filtered images facilitates visual category learning in a neural network model. PLoS ONE 18(1): e0280145. https://doi.org/10.1371/journal.pone.0280145
+
+To download our trained models, see:
+https://kilthub.cmu.edu/articles/dataset/Early_experience_with_low-pass_filtered_images_facilitates_visual_category_learning_in_a_neural_network_model/23972115
 
 ### Contents of this repository
 
@@ -92,6 +97,11 @@
   10 trials) while in experiment 2, there should be a total of 80 models (2 color
   conditions * 4 pretrained model conditions * 10 trials).
     </ul>
+  <li> Alternatively, download our pre-trained model files:
+    <ul>
+      <li> https://kilthub.cmu.edu/articles/dataset/Early_experience_with_low-pass_filtered_images_facilitates_visual_category_learning_in_a_neural_network_model/23972115
+    </ul>
+  </li>
   <li> Analyze results
       <ul>
         <li> To examine the difference between accuracy between basic-
